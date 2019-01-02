@@ -1,9 +1,12 @@
-# Made by Gabriel Brown
-
+"""
+Written by Gabriel Brown
+"""
 from flask import Flask, render_template, make_response, request
 
 app = Flask(__name__)
 
+
+# Routes
 @app.route("/")
 def hello_world():
     return "Hello world!"
