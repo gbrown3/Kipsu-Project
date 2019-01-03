@@ -3,6 +3,7 @@ Written by Gabriel Brown
 """
 # Base Python libraries
 import json
+import time
 
 # Flask and server libraries
 from flask import Flask, render_template, make_response, request
@@ -81,6 +82,50 @@ def index():
     return app.send_static_file("index.html")
     #return render_template("index.html")
 
+
+# Other methods
+def determine_greeting():
+    """
+    Return string representing a greeting that is appropriate for the current time and timezone, i.e.
+    Good morning, Good afternoon, good evening
+    """
+    localtime = time.localtime(time.time())
+    hour = localtime[3]
+
+    if hour >= 5 and hour < 12:
+
+        return "Good morning"
+
+    elif hour >= 12 and hour < 5:
+
+        return "Good afternoon"
+
+    else:
+
+        return "Good evening"
+
+
+
+
 if __name__ == "__main__":
     # debug mode makes changes instantly visible
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
