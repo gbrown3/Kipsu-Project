@@ -84,6 +84,11 @@ def index():
 
 
 # Other methods
+
+# TODO: it would be cool to let this take in a local time as well,
+# so that users connecting to the server from different time zones
+# could pass in their local time and still get an appropriate greeting,
+# not just a greeting appropriate to wherever the server is located
 def determine_greeting():
     """
     Return string representing a greeting that is appropriate for the current time and timezone, i.e.
