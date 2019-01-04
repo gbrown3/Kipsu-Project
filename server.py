@@ -10,6 +10,7 @@ from flask import Flask, render_template, make_response, request
 
 # My classes
 from supporting_classes.message import Message
+from supporting_classes.templates import Template
 from supporting_classes.guest import Guest
 from supporting_classes.reservation import Reservation
 from supporting_classes.company import Company
@@ -17,9 +18,9 @@ from supporting_classes.company import Company
 app = Flask(__name__)
 
 
-guests = []
-companies = []
-templates = [] # Each template is an ordered list of message parts, with variables as seperate elements in the list
+guests = {}
+companies = {}
+templates = {} # Each template is an ordered list of message parts, with variables as seperate elements in the list
 # TODO: explain my template system better somewhere
 
 
@@ -44,7 +45,7 @@ with open("./json/Guests.json") as json_file:
         lastName = guest_object["lastName"]
 
         guest = Guest(ID, firstName, lastName, reservation)
-        guests.append(guest)
+        guests[ID] = guest
 
 
 
@@ -62,8 +63,7 @@ with open("./json/Companies.json") as json_file:
         timezone = company_obj["timezone"]
 
         company = Company(ID, name, city, timezone)
-        companies.append(company)
-
+        companies[ID] = company
 
 
 # Load in Template data
@@ -71,9 +71,13 @@ with open("./json/Templates.json") as json_file:
 
     template_data = json.load(json_file)
 
-    for template in template_data:
+    for template_obj in template_data:
 
-        templates.append(template["template"])  # TODO: revisit this and decide whether each template needs an id or not
+        ID = template_obj["id"]
+        parts = template_obj["parts"]
+
+        template = Template(ID, parts)
+        templates[ID] = template
 
 
 

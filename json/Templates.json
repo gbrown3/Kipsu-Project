@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "template": [
+        "parts": [
             "GREETING",
             " ",
             "FIRSTNAME",
@@ -10,6 +10,17 @@
             "! Room ",
             "ROOMNUMBER",
             " is now ready for you. Enjoy your stay, and let us know if you need anything."
+        ]
+    },
+
+    {
+        "id": 2,
+        "parts": [
+            "GREETING",
+            " ",
+            "FIRSTNAME",
+            "LASTNAME",
+            "!"
         ]
     }
 ]

@@ -15,8 +15,8 @@
     <span>Select a guest: </span>
     <select>
         
-        {% for guest in guests %}
-        <option>{{guest.firstName}} {{guest.lastName}}</option>
+        {% for guest in guests.keys() %}
+        <option>{{guests[guest].firstName}} {{guests[guest].lastName}}</option>
         {% endfor %}
 
     </select>
@@ -25,8 +25,8 @@
     <span>Select a company: </span>
     <select>
 
-        {% for company in companies %}
-        <option>{{company.name}}</option>
+        {% for company in companies.keys() %}
+        <option>{{companies[company].name}}</option>
         {% endfor %}
         
     </select>
@@ -36,8 +36,8 @@
     <select>
 
         <!-- TODO: actually use template ids here -->
-        {% for i in range(templates|length) %}
-        <option>{{ i + 1 }}</option>
+        {% for key in templates.keys() %}
+        <option>{{key}}</option>
         {% endfor %}
         
     </select>
