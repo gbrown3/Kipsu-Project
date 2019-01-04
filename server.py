@@ -94,19 +94,27 @@ def index():
     return render_template("index.html", guests=guests, companies=companies, templates=templates)
 
 
-@app.route("/create_message", methods=["GET", "POST"])
+@app.route("/create_message", methods=["GET"])
 def create_message():
 
-    guest_id = request.args.get('guest_id')
-    company_id = request.args.get('company_id')
-    template_id = request.args.get('template_id')
-
-
-    # TODO: store guests, templates, companies in dictionaries with ids as keys
-    # TODO: access those dictionaries with the ids pulled from the request args, then get the
-    # appropriate data, generate the message, and return that string
-
     Message.greeting = determine_greeting()
+
+    guest_id = int(request.args.get('guestID'))
+    company_id = int(request.args.get('companyID'))
+    template_id = int(request.args.get('templateID'))
+
+    # TODO: put in some form of error handling in case one or more of the query parameters is missing
+
+
+    # Access those dictionaries with the ids pulled from the request args, then get the
+    # appropriate data, generate the message, and return that string
+    guest = guests[guest_id]
+    company = companies[company_id]
+    template = templates[template_id]
+
+    message = Message(template, guest, company)
+
+    return message.message
 
 
 
@@ -128,7 +136,7 @@ def determine_greeting():
 
         return "Good morning"
 
-    elif hour >= 12 and hour < 5:
+    elif hour >= 12 and hour < 17:
 
         return "Good afternoon"
 

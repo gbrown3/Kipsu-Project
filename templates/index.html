@@ -13,31 +13,30 @@
 <body>
 
     <span>Select a guest: </span>
-    <select>
+    <select id="guest_selection">
         
         {% for guest in guests.keys() %}
-        <option>{{guests[guest].firstName}} {{guests[guest].lastName}}</option>
+        <option value="{{guests[guest].id}}">{{guests[guest].firstName}} {{guests[guest].lastName}}</option>
         {% endfor %}
 
     </select>
     <br/>
 
     <span>Select a company: </span>
-    <select>
+    <select id="company_selection">
 
         {% for company in companies.keys() %}
-        <option>{{companies[company].name}}</option>
+        <option value="{{companies[company].id}}">{{companies[company].name}}</option>
         {% endfor %}
         
     </select>
     <br/>
 
     <span>Select a message template: </span>
-    <select>
+    <select id="template_selection">
 
-        <!-- TODO: actually use template ids here -->
-        {% for key in templates.keys() %}
-        <option>{{key}}</option>
+        {% for id in templates.keys() %}
+        <option value="{{id}}">{{id}}</option>
         {% endfor %}
         
     </select>
@@ -49,7 +48,33 @@
 
 <script type="text/javascript">
     
+    $("select").change(function() {
 
+        //alert("Guest, company or template changed");
+
+        guestID = $("#guest_selection").val();
+        companyID = $("#company_selection").val();
+        templateID = $("#template_selection").val();
+
+        console.log(guestID);
+        console.log(companyID);
+        console.log(templateID);
+
+        $.ajax({
+
+            method: "GET",
+            url: "/create_message?guestID=" + guestID + "&companyID=" + companyID + "&templateID=" + templateID,
+            success: function(response) {
+
+                // TODO: set #message content to be equal to response
+                $("#message").text(response);
+                //console.log(response);
+            }
+
+        });
+
+        
+    });
 
 </script>
 

@@ -23,7 +23,7 @@ class Message:
 
         message = ""
 
-        for part in self.template:
+        for part in self.template.parts:
 
             if part == "GREETING":
 
