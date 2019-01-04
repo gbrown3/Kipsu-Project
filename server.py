@@ -19,7 +19,8 @@ app = Flask(__name__)
 
 guests = []
 companies = []
-templates = {}  # KEY: ID, VALUE: ordered list of message parts, with variables as seperate elements
+templates = [] # Each template is an ordered list of message parts, with variables as seperate elements in the list
+# TODO: explain my template system better somewhere
 
 
 # Load in Guest and reservation data
@@ -81,17 +82,23 @@ with open("./json/Templates.json") as json_file:
 
     for template in template_data:
 
-        templates[template["id"]] = template["template"]
+        templates.append(template["template"])  # TODO: revisit this and decide whether each template needs an id or not
 
-for template in templates.keys():
+for template in templates:
 
-    print(templates[template])
+    print(template)
 
 
 
 # Routes
 @app.route("/")
 def index():
+
+    Message.greeting = determine_greeting()
+
+    # Make a sample message
+    message = Message(templates[0], guests[0], companies[0])
+    print(message.message)
 
     return app.send_static_file("index.html")
     #return render_template("index.html")
