@@ -3,11 +3,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Choose and fill in your message template</title>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous">
+    </script>
 </head>
 <body>
 
-    <p>Hello world! (Sent as static file)</p>
+    <span>Select a guest: </span>
+    <select>
+        
+        {% for guest in guests %}
+        <option>{{guest.firstName}} {{guest.lastName}}</option>
+        {% endfor %}
+
+    </select>
+    <br/>
+
+    <span>Select a company: </span>
+    <select>
+
+        {% for company in companies %}
+        <option>{{company.name}}</option>
+        {% endfor %}
+        
+    </select>
+    <br/>
+
+    <span>Select a message template: </span>
+    <select>
+
+        <!-- TODO: actually use template ids here -->
+        {% for i in range(templates|length) %}
+        <option>{{ i + 1 }}</option>
+        {% endfor %}
+        
+    </select>
+    <br/>
+
+    <p id="message"></p>
 
 </body>
+
+<script type="text/javascript">
+    
+
+
+</script>
+
+
 </html>

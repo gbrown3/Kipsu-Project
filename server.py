@@ -81,13 +81,29 @@ with open("./json/Templates.json") as json_file:
 @app.route("/")
 def index():
 
-    Message.greeting = determine_greeting()
+    
 
     # Make a sample message
-    message = Message(templates[0], guests[0], companies[0])
-    print(message.message)
+    # message = Message(templates[0], guests[0], companies[0])
+    # print(message.message)
 
     return render_template("index.html", guests=guests, companies=companies, templates=templates)
+
+
+@app.route("/create_message", methods=["GET", "POST"])
+def create_message():
+
+    guest_id = request.args.get('guest_id')
+    company_id = request.args.get('company_id')
+    template_id = request.args.get('template_id')
+
+
+    # TODO: store guests, templates, companies in dictionaries with ids as keys
+    # TODO: access those dictionaries with the ids pulled from the request args, then get the
+    # appropriate data, generate the message, and return that string
+
+    Message.greeting = determine_greeting()
+
 
 
 # Other methods
