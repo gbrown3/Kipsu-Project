@@ -1,0 +1,15 @@
+[
+    {
+        "id": 1,
+        "template": [
+            "GREETING",
+            " ",
+            "FIRSTNAME",
+            ", and welcome to ",
+            "COMPANYNAME",
+            "! Room ",
+            "ROOMNUMBER",
+            " is now ready for you. Enjoy your stay, and let us know if you need anything."
+        ]
+    }
+]

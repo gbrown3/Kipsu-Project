@@ -19,6 +19,7 @@ app = Flask(__name__)
 
 guests = []
 companies = []
+templates = {}  # KEY: ID, VALUE: ordered list of message parts, with variables as seperate elements
 
 
 # Load in Guest and reservation data
@@ -71,7 +72,20 @@ for company in companies:
 
     print(company)
 
+
+
 # Load in Template data
+with open("./json/Templates.json") as json_file:
+
+    template_data = json.load(json_file)
+
+    for template in template_data:
+
+        templates[template["id"]] = template["template"]
+
+for template in templates.keys():
+
+    print(templates[template])
 
 
 
@@ -92,7 +106,7 @@ def index():
 def determine_greeting():
     """
     Return string representing a greeting that is appropriate for the current time and timezone, i.e.
-    Good morning, Good afternoon, good evening
+    Good morning, Good afternoon, Good evening
     """
     localtime = time.localtime(time.time())
     hour = localtime[3]
