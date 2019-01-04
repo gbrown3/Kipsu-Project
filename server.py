@@ -47,11 +47,6 @@ with open("./json/Guests.json") as json_file:
         guests.append(guest)
 
 
-for guest in guests:
-
-    print(guest)
-
-
 
 # Load in Company data
 
@@ -69,10 +64,6 @@ with open("./json/Companies.json") as json_file:
         company = Company(ID, name, city, timezone)
         companies.append(company)
 
-for company in companies:
-
-    print(company)
-
 
 
 # Load in Template data
@@ -83,10 +74,6 @@ with open("./json/Templates.json") as json_file:
     for template in template_data:
 
         templates.append(template["template"])  # TODO: revisit this and decide whether each template needs an id or not
-
-for template in templates:
-
-    print(template)
 
 
 
@@ -100,8 +87,7 @@ def index():
     message = Message(templates[0], guests[0], companies[0])
     print(message.message)
 
-    return app.send_static_file("index.html")
-    #return render_template("index.html")
+    return render_template("index.html", guests=guests, companies=companies, templates=templates)
 
 
 # Other methods
