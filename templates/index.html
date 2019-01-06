@@ -15,6 +15,8 @@
     <span>Select a guest: </span>
     <select id="guest_selection">
         
+        <option value="">--no guest chosen--</option>
+
         {% for guest in guests.keys() %}
         <option value="{{guests[guest].id}}">{{guests[guest].firstName}} {{guests[guest].lastName}}</option>
         {% endfor %}
@@ -24,6 +26,8 @@
 
     <span>Select a company: </span>
     <select id="company_selection">
+
+        <option value="">--no company chosen--</option>
 
         {% for company in companies.keys() %}
         <option value="{{companies[company].id}}">{{companies[company].name}}</option>
@@ -35,6 +39,8 @@
     <span>Select a message template: </span>
     <select id="template_selection">
 
+        <option value="">--no template chosen--</option>
+
         {% for id in templates.keys() %}
         <option value="{{id}}">{{id}}</option>
         {% endfor %}
@@ -42,10 +48,10 @@
     </select>
     <br/>
 
+    <p style="text-decoration: underline;">Generated message:</p>
     <p id="message"></p>
 
-    <p>Create a new template below.</p>
-    <p>Simply type a message as you would normally, but in any place where you want to fill in information, as shown in the examples below, please write that in all capital letters and seperate it from other parts of the sentence with either punctuation or spaces.</p>
+    <p>You can also create new message templates! To do so, simply type a message as you would normally and in any place where you want to insert information unique to each guest or company, write that in all capital letters and seperate it from other parts of the sentence with either punctuation or spaces, as shown below.</p>
     <ul>
         <li>"FIRSTNAME" = first name of guest</li>
         <li>"LASTNAME" = last name of guest</li>
@@ -54,40 +60,58 @@
         <li>"CITY" = the city the company is located in</li>
         <li>"TIMEZONE" = the timezone the company is located in</li>
     </ul>
-    <textarea>
+    <p> Example: "Hello FIRSTNAME LASTNAME! Room ROOMNUMBER is ready for you. We hope you enjoy your stay at CITY COMPANYNAME."</p>
+
+    <textarea id="new_template_input" rows="5" cols="50">
         
     </textarea>
+
+    <button id="submit_template_btn">Submit</button>
 
 </body>
 
 <script type="text/javascript">
-    
-    $("select").change(function() {
 
-        //alert("Guest, company or template changed");
+    $(document).ready(function() {
 
-        guestID = $("#guest_selection").val();
-        companyID = $("#company_selection").val();
-        templateID = $("#template_selection").val();
+        $("select").change(function() {
 
-        console.log(guestID);
-        console.log(companyID);
-        console.log(templateID);
+            guestID = $("#guest_selection").val();
+            companyID = $("#company_selection").val();
+            templateID = $("#template_selection").val();
 
-        $.ajax({
+            if(guestID !== "" && companyID !== "" && templateID !== "") {
 
-            method: "GET",
-            url: "/create_message?guestID=" + guestID + "&companyID=" + companyID + "&templateID=" + templateID,
-            success: function(response) {
+                $.ajax({
 
-                // TODO: set #message content to be equal to response
-                $("#message").text(response);
-                //console.log(response);
+                    method: "GET",
+                    url: "/create_message?guestID=" + guestID + "&companyID=" + companyID + "&templateID=" + templateID,
+                    success: function(response) {
+
+                        $("#message").text(response);
+                    }
+                });
             }
+        });
+
+        $("#submit_template_btn").click(function() {
+
+            var input = $("#new_template_input").val();
+            
+            $.ajax({
+
+                method: "POST",
+                url: "/new_template?text=" + input,
+                success: function(response) {
+
+                    // TODO: response should contain new template, so add that to the list of templates
+                    console.log(response);
+
+                }
+            });
 
         });
 
-        
     });
 
 </script>

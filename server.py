@@ -116,6 +116,17 @@ def create_message():
 
     return message.message
 
+@app.route("/new_template", methods=["POST"])
+def new_template():
+
+    # TODO: process template info
+
+    template_data = request.args.get("text")
+
+    print(template_data)
+
+    return ""
+
 
 
 # Other methods
