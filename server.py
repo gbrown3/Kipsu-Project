@@ -125,6 +125,68 @@ def new_template():
 
     print(template_data)
 
+    parts = []
+
+    split_string = template_data.split()
+
+    for string in split_string:
+
+        #TODO: As of the current moment, this method doesn't really handle long strings with one of the
+        # keywords incorporated into it, such as an email with the company's name in it.
+        # To be honest, I'm not sure you'd ever want to make a template with an email where
+        # you can swap out the company name, as it would probably make more sense to have an EMAIL
+        # keyword that corresponded to another attribute stored in company objects.
+
+        if "GREETING" in string:
+
+            parts.append("GREETING")
+            other_chars = string.replace("GREETING", "")
+            parts.append(other_chars)
+
+        elif "FIRSTNAME" in string:
+
+            parts.append("FIRSTNAME")
+            other_chars = string.replace("FIRSTNAME", "")
+            parts.append(other_chars)
+
+        elif "LASTNAME" in string:
+
+            parts.append("LASTNAME")
+            other_chars = string.replace("LASTNAME", "")
+            parts.append(other_chars)
+
+        elif "ROOMNUMBER" in string:
+
+            parts.append("ROOMNUMBER")
+            other_chars = string.replace("ROOMNUMBER", "")
+            parts.append(other_chars)
+
+        elif "COMPANYNAME" in string:
+
+            parts.append("COMPANYNAME")
+            other_chars = string.replace("COMPANYNAME", "")
+            parts.append(other_chars)
+
+        elif "CITY" in string:
+
+            parts.append("CITY")
+            other_chars = string.replace("CITY", "")
+            parts.append(other_chars)
+
+        elif "TIMEZONE" in string:
+
+            parts.append("TIMEZONE")
+            other_chars = string.replace("TIMEZONE", "")
+            parts.append(other_chars)
+
+        else:
+
+            parts.append(string)
+
+    print(parts)
+
+    
+
     return ""
 
 
