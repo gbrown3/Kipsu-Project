@@ -6,7 +6,7 @@ import json
 import time
 
 # Flask and server libraries
-from flask import Flask, render_template, make_response, request
+from flask import Flask, render_template, make_response, request, jsonify
 
 # My classes
 from supporting_classes.message import Message
@@ -73,7 +73,15 @@ with open("./json/Templates.json") as json_file:
 
     for template_obj in template_data:
 
-        ID = template_obj["id"]
+        # I assigned IDs this way to make room for new templates.
+        # If I allowed the IDs to be asigned in JSON I would have to 
+        # look through every id and keep track of what new ones are available,
+        # or use something like UUID which seems a bit overkill.
+        # I'm also using a dictionary rather than a list because I didn't want the
+        # client side to start with Template 0, and I wanted that to be reflected
+        # in the way these templates are stored in the server as well.
+
+        ID = len(templates) + 1
         parts = template_obj["parts"]
 
         template = Template(ID, parts)
@@ -84,12 +92,6 @@ with open("./json/Templates.json") as json_file:
 # Routes
 @app.route("/")
 def index():
-
-    
-
-    # Make a sample message
-    # message = Message(templates[0], guests[0], companies[0])
-    # print(message.message)
 
     return render_template("index.html", guests=guests, companies=companies, templates=templates)
 
@@ -119,19 +121,14 @@ def create_message():
 @app.route("/new_template", methods=["POST"])
 def new_template():
 
-    # TODO: process template info
-
     template_data = request.args.get("text")
 
-    print(template_data)
-
     parts = []
-
     split_string = template_data.split()
 
     for string in split_string:
 
-        #TODO: As of the current moment, this method doesn't really handle long strings with one of the
+        # As of the current moment, this method doesn't really handle long strings with one of the
         # keywords incorporated into it, such as an email with the company's name in it.
         # To be honest, I'm not sure you'd ever want to make a template with an email where
         # you can swap out the company name, as it would probably make more sense to have an EMAIL
@@ -183,11 +180,15 @@ def new_template():
 
             parts.append(string)
 
+        parts.append(" ")
+
     print(parts)
 
-    
+    ID = len(templates) + 1
+    template = Template(ID, parts)
+    templates[ID] = template
 
-    return ""
+    return jsonify(template.serialize())
 
 
 

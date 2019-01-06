@@ -8,3 +8,10 @@ class Template:
 
         self.id = id
         self.parts = parts
+
+    def serialize(self):
+
+        return {
+            "id": self.id,
+            "parts": self.parts
+        }

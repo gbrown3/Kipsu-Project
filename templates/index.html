@@ -107,6 +107,10 @@
                     // TODO: response should contain new template, so add that to the list of templates
                     console.log(response);
 
+                    newID = response["id"];
+
+                    $("#template_selection").append("<option value='" + newID + "'>" + newID + "</option>");
+
                 }
             });
 
