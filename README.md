@@ -20,7 +20,7 @@ You should now see `(venv)` before each line of your command line prompt.
 pip install flask
 ```
 
-That's it! Remember to always activate your virtual environment with `. ./venv/bin/activate` in the `PiratePlunder` directory before you start the server.
+That's it! Remember to always activate your virtual environment with `. ./venv/bin/activate` in the `Message-Project` directory before you start the server.
 
 ## How to start the server and access the website
 
