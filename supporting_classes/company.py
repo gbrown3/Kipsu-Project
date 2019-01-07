@@ -1,4 +1,6 @@
 """
+Represents a company in a specific city
+
 Written by Gabriel Brown
 """
 

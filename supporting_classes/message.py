@@ -1,4 +1,6 @@
 """
+Represents a message with a specific guest, company and template.
+
 Written by Gabriel Brown
 """
 
@@ -8,8 +10,11 @@ class Message:
     # (Or hopefully the individual client's time of day with further implementation)
     greeting = "PLACEHOLDER GREETING"
 
+    # Each keyword corresponds to a specific variable in guest, company, reservation objects, etc.
+    keywords = ["GREETING", "FIRSTNAME", "LASTNAME", "ROOMNUMBER", "COMPANYNAME", "CITY", "TIMEZONE"]
+
+
     def __init__(self, template, guest, company):
-        """"""
 
         self.template = template
         self.guest = guest
@@ -19,7 +24,10 @@ class Message:
 
 
     def generate_message(self):
-        """"""
+        """
+        Build up the actual message string based on the guest, company and template,
+        replacing keywords with the actual information they represent.
+        """
 
         message = ""
 

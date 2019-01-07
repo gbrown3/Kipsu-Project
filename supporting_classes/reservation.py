@@ -1,4 +1,6 @@
 """
+A reservation for a particular room, along with the start and end time
+
 Written by Gabriel Brown
 """
 

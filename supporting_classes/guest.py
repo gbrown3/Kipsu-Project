@@ -1,4 +1,6 @@
 """
+Represents one guest with a reservation
+
 Written by Gabriel Brown
 """
 

@@ -26,9 +26,6 @@ guests = {}
 companies = {}
 templates = {}
 
-# Each keyword corresponds to a specific variable in guest, company, reservation objects, etc.
-keywords = ["GREETING", "FIRSTNAME", "LASTNAME", "ROOMNUMBER", "COMPANYNAME", "CITY", "TIMEZONE"]
-
 
 # Load in Guest and reservation data
 with open("./json/Guests.json") as json_file:
@@ -77,13 +74,21 @@ with open("./json/Templates.json") as json_file:
 
     for template_obj in template_data:
 
-        # I assigned IDs this way to make room for new templates.
+        # I assigned IDs based on the size of the templates dictionary to 
+        # make it easier to generate new IDs for new templates.
         # If I allowed the IDs to be asigned in JSON I would have to 
         # look through every id and keep track of what new ones are available,
         # or use something like UUID which seems a bit overkill.
-        # I'm also using a dictionary rather than a list because I didn't want the
-        # client side to start with Template 0, and I wanted that to be reflected
-        # in the way these templates are stored in the server as well.
+
+        # I'm also using a dictionary rather than a list because I didn't want to
+        # just use the indices of the list as ID values. If I did that, the
+        # client side would start with Template 0, which seems a bit strange
+        # if you're not a developer. I also didn't want to to simply add 1
+        # when displaying these values on the client side, because that makes
+        # more confusing when it comes time to debug message templates. 
+        # A dictionary made the most since to have values start at one, but still
+        # directly associate the ID values seen on the client side with the way
+        # they are internally stored.
 
         ID = len(templates) + 1
         parts = template_obj["parts"]
@@ -145,7 +150,7 @@ def new_template():
 
         keyword_found = False
 
-        for keyword in keywords:
+        for keyword in Message.keywords:
 
             if keyword in string:
                 parts.append(keyword)
@@ -158,7 +163,7 @@ def new_template():
             parts.append(string)
 
 
-        parts.append(" ")
+        parts.append(" ")   # to account for split() removing all of the spaces
 
 
     ID = len(templates) + 1
