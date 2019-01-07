@@ -49,12 +49,13 @@
     <br/>
 
     <p style="text-decoration: underline;">Generated message:</p>
-    <p id="message"></p>
+    <p id="message">Select a guest, company, and template above to generate a message</p>
 
 
     <hr>
 
-    <p>You can also create new message templates! To do so, simply type a message as you would normally and in any place where you want to insert information unique to each guest or company, write that in all capital letters and seperate it from other parts of the sentence with either punctuation or spaces, as shown below.</p>
+    <p style="text-decoration: underline;">How to create a custom message template:</p>
+    <p>Type a message as you would normally and in any place where you want to insert information unique to each guest or company, write that part in all capital letters and seperate it from other parts of the sentence with either punctuation or spaces, as shown below.</p>
     <ul>
         <li>"FIRSTNAME" = first name of guest</li>
         <li>"LASTNAME" = last name of guest</li>
@@ -63,13 +64,17 @@
         <li>"CITY" = the city the company is located in</li>
         <li>"TIMEZONE" = the timezone the company is located in</li>
     </ul>
-    <p> Example: "Hello FIRSTNAME LASTNAME! Room ROOMNUMBER is ready for you. We hope you enjoy your stay at CITY COMPANYNAME."</p>
+    <p> Example: "Hello FIRSTNAME LASTNAME! Room ROOMNUMBER is ready for you. We hope you enjoy your stay at COMPANYNAME in CITY."</p>
 
-    <textarea id="new_template_input" rows="5" cols="50">
+    <textarea id="new_template_input" rows="5" cols="50" style="display: block;
+    margin-left: auto;
+    margin-right: auto;">
         
     </textarea>
 
-    <button id="submit_template_btn">Submit</button>
+    <button id="submit_template_btn" style="display: block;
+    margin-left: auto;
+    margin-right: auto;">Submit</button>
 
 </body>
 
@@ -77,6 +82,8 @@
 
     $(document).ready(function() {
 
+        // Whenever a selection is made, so long as a guest, company, AND template have all been chosen,
+        // send an AJAX request to generate a message and make that appear
         $("select").change(function() {
 
             guestID = $("#guest_selection").val();
@@ -97,6 +104,9 @@
             }
         });
 
+
+        // The server should do all the processing, so send the contents of the
+        // textarea as is when the submit button is pressed
         $("#submit_template_btn").click(function() {
 
             var input = $("#new_template_input").val();
@@ -107,11 +117,9 @@
                 url: "/new_template?text=" + input,
                 success: function(response) {
 
-                    // TODO: response should contain new template, so add that to the list of templates
-                    console.log(response);
-
                     newID = response["id"];
 
+                    // Add to new template to the list without reloading the page
                     $("#template_selection").append("<option value='" + newID + "'>" + newID + "</option>");
 
                 }
