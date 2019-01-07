@@ -1,4 +1,6 @@
 """
+The main Flask server, where requests are handled and requests for new messages are processed
+
 Written by Gabriel Brown
 """
 # Base Python libraries
@@ -15,17 +17,20 @@ from supporting_classes.guest import Guest
 from supporting_classes.reservation import Reservation
 from supporting_classes.company import Company
 
+
+
 app = Flask(__name__)
 
 
 guests = {}
 companies = {}
-templates = {} # Each template is an ordered list of message parts, with variables as seperate elements in the list
-# TODO: explain my template system better somewhere
+templates = {}
+
+# Each keyword corresponds to a specific variable in guest, company, reservation objects, etc.
+keywords = ["GREETING", "FIRSTNAME", "LASTNAME", "ROOMNUMBER", "COMPANYNAME", "CITY", "TIMEZONE"]
 
 
 # Load in Guest and reservation data
-
 with open("./json/Guests.json") as json_file:
 
     guest_res_data = json.load(json_file)
@@ -50,7 +55,6 @@ with open("./json/Guests.json") as json_file:
 
 
 # Load in Company data
-
 with open("./json/Companies.json") as json_file:
 
     company_data = json.load(json_file)
@@ -90,12 +94,16 @@ with open("./json/Templates.json") as json_file:
 
 
 # Routes
+
+# Returns the main page, rendered from an HTML template so it can be populated with information 
+# about different guests, companies and message templates
 @app.route("/")
 def index():
 
     return render_template("index.html", guests=guests, companies=companies, templates=templates)
 
 
+# Handles AJAX requests for new messages
 @app.route("/create_message", methods=["GET"])
 def create_message():
 
@@ -107,9 +115,6 @@ def create_message():
 
     # TODO: put in some form of error handling in case one or more of the query parameters is missing
 
-
-    # Access those dictionaries with the ids pulled from the request args, then get the
-    # appropriate data, generate the message, and return that string
     guest = guests[guest_id]
     company = companies[company_id]
     template = templates[template_id]
@@ -118,10 +123,14 @@ def create_message():
 
     return message.message
 
+
+# Handles AJAX requests to add new templates
 @app.route("/new_template", methods=["POST"])
 def new_template():
 
     template_data = request.args.get("text")
+
+    # TODO: add some error handling here
 
     parts = []
     split_string = template_data.split()
@@ -134,55 +143,23 @@ def new_template():
         # you can swap out the company name, as it would probably make more sense to have an EMAIL
         # keyword that corresponded to another attribute stored in company objects.
 
-        if "GREETING" in string:
+        keyword_found = False
 
-            parts.append("GREETING")
-            other_chars = string.replace("GREETING", "")
-            parts.append(other_chars)
+        for keyword in keywords:
 
-        elif "FIRSTNAME" in string:
+            if keyword in string:
+                parts.append(keyword)
+                other_chars = string.replace(keyword, "")
+                parts.append(other_chars)
+                keyword_found = True
+                break
 
-            parts.append("FIRSTNAME")
-            other_chars = string.replace("FIRSTNAME", "")
-            parts.append(other_chars)
-
-        elif "LASTNAME" in string:
-
-            parts.append("LASTNAME")
-            other_chars = string.replace("LASTNAME", "")
-            parts.append(other_chars)
-
-        elif "ROOMNUMBER" in string:
-
-            parts.append("ROOMNUMBER")
-            other_chars = string.replace("ROOMNUMBER", "")
-            parts.append(other_chars)
-
-        elif "COMPANYNAME" in string:
-
-            parts.append("COMPANYNAME")
-            other_chars = string.replace("COMPANYNAME", "")
-            parts.append(other_chars)
-
-        elif "CITY" in string:
-
-            parts.append("CITY")
-            other_chars = string.replace("CITY", "")
-            parts.append(other_chars)
-
-        elif "TIMEZONE" in string:
-
-            parts.append("TIMEZONE")
-            other_chars = string.replace("TIMEZONE", "")
-            parts.append(other_chars)
-
-        else:
-
+        if not keyword_found:
             parts.append(string)
+
 
         parts.append(" ")
 
-    print(parts)
 
     ID = len(templates) + 1
     template = Template(ID, parts)
@@ -217,7 +194,6 @@ def determine_greeting():
     else:
 
         return "Good evening"
-
 
 
 
